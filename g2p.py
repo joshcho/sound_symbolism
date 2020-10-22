@@ -14,6 +14,7 @@ Feature List
 
 g2p = G2p()
 phoneme_dict = util.get_phoneme_dict()
+vec_cache = {}
 
 def transform_text(texts, phoneme_dict):
     """
@@ -49,7 +50,8 @@ def split_words(all_words):
 def train_bad_words():
     nltk.download('words')
     random.seed(1234)
-    bad_words = np.loadtxt("bad-words.txt",dtype=str)
+    bad_words = np.loadtxt("facebook-bad-words.txt",delimiter=',',dtype=str)
+    print(len(bad_words))
     # some bad words are not in nltk corpus
     all_words = list(set(words.words()).union(bad_words))
     train_words, val_words, test_words = split_words(all_words)
