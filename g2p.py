@@ -5,6 +5,10 @@ import util
 import nltk
 from nltk.corpus import words
 import random
+"""
+Feature List
+1. Save phonemes, not encodings. We may use the phonemes later for RNN.
+"""
 
 g2p = G2p()
 phoneme_dict = util.get_phoneme_dict()
