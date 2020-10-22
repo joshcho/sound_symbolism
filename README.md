@@ -6,6 +6,9 @@ python g2p.py
 See [g2p](https://github.com/Kyubyong/g2p) for details.
 # Datasets
 [IMDB Dataset](https://www.kaggle.com/columbine/imdb-dataset-sentiment-analysis-in-csv-format) as "imdb\_train.csv", "imdb\_test.csv", "imdb\_valid.csv"
+[Bad Words](https://www.cs.cmu.edu/~biglou/resources/bad-words.txt)
+YouTube Subscriber Count
+Reddit...?
 # Research Direction
 Sound symbolism is already quite a vibrant field. Many linguists already agree on sound symbolism, and in the past ten years [many empirical studies](https://www.nickkolenda.com/brand-names/#naming-step2a) have come out in favor of sound symbolism. [This computational study](https://www.aclweb.org/anthology/P19-1171.pdf), however, found little correlation between form and meaning. Given this background, here are two ways in which we can take our approach.
 
