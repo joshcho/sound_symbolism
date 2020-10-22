@@ -16,7 +16,6 @@ Feature List
 
 g2p = G2p()
 phoneme_dict = util.get_phoneme_dict()
-vec_cache = {}
 
 def transform_text(texts, phoneme_dict):
     """
@@ -70,6 +69,21 @@ def train_bad_words():
 
     nltk_matrix = np.loadtxt(nltk_matrix_path)
     bad_matrix = np.loadtxt(bad_matrix_path)
+
+    if False: # analyze frequency of words in each dataset
+        nltk_counts = np.sum(nltk_matrix,axis=0)
+        bad_counts = np.sum(bad_matrix,axis=0)
+        # freq = bad_counts/np.sum(bad_counts)
+        freq = nltk_counts/np.sum(nltk_counts)
+        freq_dict = phoneme_dict.copy()
+        for phoneme, i in freq_dict.items():
+            freq_dict[phoneme] = freq[i]
+
+        some_list = []
+        for phoneme in sorted(freq_dict, key=freq_dict.get,reverse=True):
+            some_list.append((phoneme, freq_dict[phoneme]))
+        print(some_list)
+        return
 
     nltk_labels = np.array([[1 if word in bad_words else 0 \
                              for word in nltk_words]]).T
