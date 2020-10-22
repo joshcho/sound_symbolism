@@ -11,15 +11,15 @@ sample_texts = ["I have $250 in my pocket.", # number -> spell-out
 g2p = G2p()
 text_phoneme_cache = {}
 
-def time(function, variable):
+def time(function, variable, iterations):
     tic = ti.perf_counter()
-    for i in range(100):
+    for i in range(iterations):
         function(variable)
     toc = ti.perf_counter()
     fname = str(function)
     if hasattr(function, '__name__'):
         fname = function.__name__
-    print(f"100 iterations of {fname} ran in {toc - tic:0.4f} seconds")
+    print(f"{iterations} iterations of {fname} ran in {toc - tic:0.4f} seconds")
 
 
 def get_phonemes(text):
