@@ -156,52 +156,43 @@ def run_naive_bayes(model, dictionary, predictions_path):
 
     np.savetxt(predictions_path, naive_bayes_predictions)
 
-    correct0 = 0
-    num0 = 0
-    correct1 = 0
-    num1 = 0
-    for i in range(len(test_labels)):
-        if test_labels[i] == 1:
-            if naive_bayes_predictions[i] \
-                    == test_labels[i]:
-                correct1 += 1
-            num1 += 1
-        else:
-            if naive_bayes_predictions[i] \
-                    == test_labels[i]:
-                correct0 += 1
-            num0 += 1
-    naive_bayes_accuracy = (correct0/num0 + correct1/num1)/2
-    print('Naive Bayes had a balanced accuracy of {} on the testing set'.format(naive_bayes_accuracy))
+    def balanced_accuracy(predictions, labels):
+        correct0 = 0
+        num0 = 0
+        correct1 = 0
+        num1 = 0
+        for i in range(len(labels)):
+            if labels[i] == 1:
+                if predictions[i] \
+                        == labels[i]:
+                    correct1 += 1
+                num1 += 1
+            else:
+                if predictions[i] \
+                        == labels[i]:
+                    correct0 += 1
+                num0 += 1
+        return (correct0/num0 + correct1/num1)/2
+
+    print('Naive Bayes had a balanced accuracy of {} on the testing set'.format(balanced_accuracy(naive_bayes_predictions, test_labels)))
 
     top_5_words = get_top_five_naive_bayes_words(naive_bayes_model, dictionary)
 
     print('The top 5 indicative words for Naive Bayes are: ', top_5_words)
 
-# def run_svm():
-#     optimal_radius = compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, [0.01, 0.1, 1, 10])
+    # optimal_radius = compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, [0.01, 0.1, 1, 10])
 
-#     util.write_json('spam_optimal_radius', optimal_radius)
+    # print('The optimal SVM radius was {}'.format(optimal_radius))
 
-#     print('The optimal SVM radius was {}'.format(optimal_radius))
+    # svm_predictions = svm.train_and_predict_svm(train_matrix, train_labels, test_matrix, optimal_radius)
 
-#     svm_predictions = svm.train_and_predict_svm(train_matrix, train_labels, test_matrix, optimal_radius)
+    # svm_accuracy = np.mean(svm_predictions == test_labels)
 
-#     svm_accuracy = np.mean(svm_predictions == test_labels)
+    # print('The SVM model had an accuracy of {} on the testing set'.format(svm_accuracy, optimal_radius))
 
-#     print('The SVM model had an accuracy of {} on the testing set'.format(svm_accuracy, optimal_radius))
+    logreg_predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, test_matrix, 0.001)
 
+    logreg_accuracy = balanced_accuracy(logreg_predictions, test_labels)
+    # logreg_accuracy = np.mean(logreg_predictions == test_labels)
 
-#     train_matrix = util.load_bert_encoding('bert_train_matrix.tsv.bz2')
-#     val_matrix = util.load_bert_encoding('bert_val_matrix.tsv.bz2')
-#     test_matrix = util.load_bert_encoding('bert_test_matrix.tsv.bz2')
-
-#     best_learning_rate = compute_best_logreg_learning_rate(train_matrix, train_labels, val_matrix, val_labels, [0.01, 0.001, 0.0001, 0.00001, 0.000001])
-
-#     print('The best learning rate for logistic regression is {}'.format(best_learning_rate))
-
-#     logreg_predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, test_matrix, best_learning_rate)
-
-#     logreg_accuracy = np.mean(logreg_predictions == test_labels)
-
-#     print('The Logistic Regression model with BERT encodings had an accuracy of {} on the testing set'.format(logreg_accuracy))
+    print('The Logistic Regression model had an accuracy of {} on the testing set'.format(logreg_accuracy))

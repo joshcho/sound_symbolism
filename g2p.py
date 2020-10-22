@@ -43,7 +43,7 @@ def split_words(all_words):
     diff_words = list(set(all_words).difference(set(train_words)))
     val_words = random.sample(diff_words, len(diff_words) // 2)
     test_words = list(set(diff_words).difference(set(val_words)))
-    return diff_words, val_words, test_words
+    return train_words, val_words, test_words
 
 
 def train_bad_words():
@@ -52,7 +52,7 @@ def train_bad_words():
     bad_words = np.loadtxt("bad-words.txt",dtype=str)
     # some bad words are not in nltk corpus
     all_words = list(set(words.words()).union(bad_words))
-    diff_words, val_words, test_words = split_words(all_words)
+    train_words, val_words, test_words = split_words(all_words)
     train_labels = np.array([1 if word in bad_words else 0 \
                              for word in train_words])
     val_labels = np.array([1 if word in bad_words else 0 \
@@ -90,13 +90,14 @@ def train_imdb():
     if False:
         train_matrix = transform_text(train_texts, phoneme_dict)
         np.savetxt("imdb_train_matrix.gz", train_matrix)
+        val_matrix = transform_text(val_texts, phoneme_dict)
+        np.savetxt("imdb_val_matrix.gz", val_matrix)
         test_matrix = transform_text(test_texts, phoneme_dict)
         np.savetxt("imdb_test_matrix.gz", test_matrix)
     train_matrix = np.loadtxt("imdb_train_matrix.gz")
+    val_matrix = np.loadtxt("imdb_val_matrix.gz")
     test_matrix = np.loadtxt("imdb_test_matrix.gz")
 
-    val_matrix = transform_text(val_texts, phoneme_dict)
-    np.savetxt("imdb_val_matrix.gz", val_matrix)
 
     model = {}
     model["train_matrix"] = train_matrix
