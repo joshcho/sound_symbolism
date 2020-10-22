@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import nltk
 from nltk.corpus import words
 import random
+from sklearn.utils import shuffle
+
 """
 Feature List
 1. Save phonemes, not encodings. We may use the phonemes later for RNN.
@@ -104,12 +106,9 @@ def train_bad_words():
                              for word in nltk_words]]).T
     bad_labels = np.ones((len(bad_words), 1))
 
-    # shuffling both matrix and labels together and merging nltk and bad
-    nltk_dummy = np.concatenate((nltk_matrix, nltk_labels), axis=1)
-    bad_dummy = np.concatenate((bad_matrix, bad_labels), axis=1)
-    dummy = np.concatenate((nltk_dummy, bad_dummy), axis=0)
-    np.random.shuffle(dummy)
-    matrix, labels = np.split(dummy, [-1], axis=1)
+    matrix = np.concatenate((nltk_matrix, bad_matrix), axis=0)
+    labels = np.concatenate((nltk_labels, bad_labels), axis=0)
+    matrix, labels = shuffle(matrix, labels, random_state=0)
     labels = np.reshape(labels, (len(labels),))
 
     model = {}
