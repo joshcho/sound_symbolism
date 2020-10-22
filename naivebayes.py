@@ -149,9 +149,23 @@ def run_naive_bayes(train_matrix, train_labels, test_matrix, test_labels, dictio
 
     np.savetxt(predictions_path, naive_bayes_predictions)
 
-    naive_bayes_accuracy = np.mean(naive_bayes_predictions == test_labels)
-
-    print('Naive Bayes had an accuracy of {} on the testing set'.format(naive_bayes_accuracy))
+    correct0 = 0
+    num0 = 0
+    correct1 = 0
+    num1 = 0
+    for i in range(len(test_labels)):
+        if test_labels[i] == 1:
+            if naive_bayes_predictions[i] \
+                    == test_labels[i]:
+                correct1 += 1
+            num1 += 1
+        else:
+            if naive_bayes_predictions[i] \
+                    == test_labels[i]:
+                correct0 += 1
+            num0 += 1
+    naive_bayes_accuracy = (correct0/num0 + correct1/num1)/2
+    print('Naive Bayes had a balanced accuracy of {} on the testing set'.format(naive_bayes_accuracy))
 
     top_5_words = get_top_five_naive_bayes_words(naive_bayes_model, dictionary)
 
