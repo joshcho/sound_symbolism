@@ -9,7 +9,6 @@ sample_texts = ["I have $250 in my pocket.", # number -> spell-out
          "I'm an activationist.", "I"] # newly coined word
 
 g2p = G2p()
-text_phoneme_cache = {}
 
 def time(function, variable, iterations):
     tic = ti.perf_counter()
@@ -21,38 +20,22 @@ def time(function, variable, iterations):
         fname = function.__name__
     print(f"{iterations} iterations of {fname} ran in {toc - tic:0.4f} seconds")
 
+all_phonemes = ["<pad>", "<unk>", "<s>", "</s>"] + \
+    ['AA0', 'AA1', 'AA2', 'AE0', 'AE1', 'AE2', 'AH0', 'AH1', 'AH2',
+        'AO0', 'AO1', 'AO2', 'AW0', 'AW1', 'AW2', 'AY0', 'AY1', 'AY2',
+        'B', 'CH', 'D', 'DH','EH0', 'EH1', 'EH2', 'ER0', 'ER1', 'ER2',
+        'EY0', 'EY1','EY2', 'F', 'G', 'HH','IH0', 'IH1', 'IH2', 'IY0',
+        'IY1', 'IY2', 'JH', 'K', 'L','M', 'N', 'NG', 'OW0', 'OW1','OW2',
+        'OY0', 'OY1', 'OY2', 'P', 'R', 'S', 'SH', 'T', 'TH','UH0', 'UH1',
+        'UH2', 'UW','UW0', 'UW1', 'UW2', 'V', 'W', 'Y', 'Z', 'ZH']
 
-def get_phonemes(text):
-    if text in text_phoneme_cache:
-        return text_phoneme_cache[text]
-    else:
-        phonemes = g2p(text)
-        text_phoneme_cache[text] = phonemes
-        return phonemes
-
-def create_phoneme_dict(texts):
-    """
-    Args:
-        texts: Texts as input
-
-    Return:
-        Dictionary with a phoneme as key and index as value
-    """
-    all_phonemes = set()
+def generate_phoneme_dict():
     index = 0
-    for text in texts:
-        if index % 1000 == 0:
-            print("%d/%d texts processed for phoneme dictionary"% (index, len(texts)))
-        for phoneme in get_phonemes(text):
-            all_phonemes.add(phoneme)
-        index += 1
-
-    phoneme_dict = {}
-    index = 0
+    pdict = {}
     for phoneme in all_phonemes:
-        phoneme_dict[phoneme] = index
+        pdict[phoneme] = index
         index += 1
-    return phoneme_dict
+    return pdict
 
 def transform_text(texts, phoneme_dict):
     """
@@ -67,11 +50,11 @@ def transform_text(texts, phoneme_dict):
     index = 0
     for text in texts:
         arr = [0] * len(phoneme_dict)
-        for phoneme in get_phonemes(text):
+        for phoneme in g2p(text):
             if phoneme in phoneme_dict:
                 arr[phoneme_dict[phoneme]] += 1
         matrix.append(arr)
-        if index % 1000 == 0:
+        if index % 100 == 0:
             print("%d/%d texts transformed" % (index, len(texts)))
         index += 1
     return np.array(matrix)
@@ -83,8 +66,9 @@ val_texts, val_labels = \
 test_texts, test_labels = \
     util.load_csv('imdb_test.csv')
 
-# phoneme_dict = create_phoneme_dict(train_texts)
-# print(len(phoneme_dict))
+phoneme_dict = generate_phoneme_dict()
 
-# train_matrix = transform_text(train_texts, phoneme_dict)
-# print(train_matrix.shape)
+train_matrix = transform_text(train_texts, phoneme_dict)
+np.savetxt("train_matrix.gz", train_matrix)
+print(train_matrix)
+print(train_matrix.shape)
