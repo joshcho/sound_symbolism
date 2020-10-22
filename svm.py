@@ -36,7 +36,12 @@ def svm_train(matrix, category, radius):
 
     alpha_avg = 0
     ii = 0
+    print(outer_loops * M)
+    index = 0
     while ii < outer_loops * M:
+        if index % (outer_loops * M // 100):
+            print(index / (outer_loops* M), "% trained")
+        index += 1
         i = int(np.random.rand() * M)
         margin = Y[i] * np.dot(K[i, :], alpha)
         grad = M * L * K[:, i] * alpha[i]
