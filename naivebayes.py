@@ -142,7 +142,14 @@ def compute_best_logreg_learning_rate(train_matrix, train_labels, val_matrix, va
     # *** END CODE HERE ***
 
 
-def run_naive_bayes(train_matrix, train_labels, test_matrix, test_labels, dictionary, predictions_path):
+def run_naive_bayes(model, dictionary, predictions_path):
+    train_matrix = model["train_matrix"]
+    val_matrix = model["val_matrix"]
+    test_matrix = model["test_matrix"]
+    train_labels = model["train_labels"]
+    val_labels = model["val_labels"]
+    test_labels = model["test_labels"]
+
     naive_bayes_model = fit_naive_bayes_model(train_matrix, train_labels)
 
     naive_bayes_predictions = predict_from_naive_bayes_model(naive_bayes_model, test_matrix)

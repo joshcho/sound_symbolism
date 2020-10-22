@@ -37,31 +37,47 @@ def transform_text(texts, phoneme_dict):
         index += 1
     return np.array(matrix)
 
+def split_words(all_words):
+    train_words = \
+        random.sample(all_words, len(all_words) *2 // 3)
+    diff_words = list(set(all_words).difference(set(train_words)))
+    val_words = random.sample(diff_words, len(diff_words) // 2)
+    test_words = list(set(diff_words).difference(set(val_words)))
+    return diff_words, val_words, test_words
+
+
 def train_bad_words():
     nltk.download('words')
     random.seed(1234)
     bad_words = np.loadtxt("bad-words.txt",dtype=str)
     # some bad words are not in nltk corpus
-    all_words = list(set(random.sample(words.words(),len(bad_words)*5)).union(bad_words))
-    train_words = \
-        random.sample(all_words, len(all_words) * 3 // 4)
-    test_words = list(set(all_words).difference(set(train_words)))
+    all_words = list(set(words.words()).union(bad_words))
+    diff_words, val_words, test_words = split_words(all_words)
     train_labels = np.array([1 if word in bad_words else 0 \
                              for word in train_words])
+    val_labels = np.array([1 if word in bad_words else 0 \
+                             for word in val_words])
     test_labels = np.array([1 if word in bad_words else 0 \
                              for word in test_words])
 
     train_matrix = transform_text(train_words, phoneme_dict)
     np.savetxt("bad_words_train_matrix.gz", train_matrix)
+    val_matrix = transform_text(val_words, phoneme_dict)
+    np.savetxt("bad_words_val_matrix.gz", val_matrix)
     test_matrix = transform_text(test_words, phoneme_dict)
     np.savetxt("bad_words_test_matrix.gz", test_matrix)
 
     # train_matrix = np.loadtxt("bad_words_train_matrix.gz")
     # test_matrix = np.loadtxt("bad_words_test_matrix.gz")
+    model = {}
+    model["train_matrix"] = train_matrix
+    model["val_matrix"] = val_matrix
+    model["test_matrix"] = test_matrix
+    model["train_labels"] = train_labels
+    model["val_labels"] = val_labels
+    model["test_labels"] = test_labels
 
-    naivebayes.run_naive_bayes(train_matrix, train_labels,
-                               test_matrix, test_labels,
-                               phoneme_dict, "bad_words_predictions")
+    naivebayes.run_naive_bayes(model, phoneme_dict, "bad_words_predictions")
 
 def train_imdb():
     train_texts, train_labels = \
@@ -76,11 +92,18 @@ def train_imdb():
         np.savetxt("imdb_train_matrix.gz", train_matrix)
         test_matrix = transform_text(test_texts, phoneme_dict)
         np.savetxt("imdb_test_matrix.gz", test_matrix)
-    print(len(test_labels))
-    print(np.sum(test_labels))
-
     train_matrix = np.loadtxt("imdb_train_matrix.gz")
     test_matrix = np.loadtxt("imdb_test_matrix.gz")
-    naivebayes.run_naive_bayes(train_matrix, train_labels,
-                               test_matrix, test_labels,
-                               phoneme_dict, "imdb_predictions")
+
+    val_matrix = transform_text(val_texts, phoneme_dict)
+    np.savetxt("imdb_val_matrix.gz", val_matrix)
+
+    model = {}
+    model["train_matrix"] = train_matrix
+    model["val_matrix"] = val_matrix
+    model["test_matrix"] = test_matrix
+    model["train_labels"] = train_labels
+    model["val_labels"] = val_labels
+    model["test_labels"] = test_labels
+
+    naivebayes.run_naive_bayes(model, phoneme_dict, "imdb_predictions")
