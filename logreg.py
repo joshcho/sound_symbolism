@@ -24,13 +24,15 @@ def calc_grad(X, Y, theta):
     """Compute the gradient of the loss with respect to theta."""
     count, _ = X.shape
 
-    probs = 1. / (1 + np.exp(-X.dot(theta)))
+    result = -X.dot(theta).astype(np.float64)
+    probs = 1. / (1 + np.exp(result))
     grad = (Y - probs).dot(X)
 
     return grad
 
 def calc_loss(X, Y, theta):
-    probs = 1. / (1 + np.exp(-X.dot(theta)))
+    result = -X.dot(theta).astype(np.float64)
+    probs = 1. / (1 + np.exp(result))
     return np.mean(-Y * np.log(probs) - (1 - Y) * np.log(1 - probs))
 
 def logreg_train(X, Y, learning_rate=0.00001, max_iter=1000, verbose=False):
@@ -38,7 +40,7 @@ def logreg_train(X, Y, learning_rate=0.00001, max_iter=1000, verbose=False):
     and return the learned parameters
 
     Args:
-        X: the design matrix where each row corresponds to a data point and 
+        X: the design matrix where each row corresponds to a data point and
            each column corresponds to a feature
         Y: the vector containing labels (0 or 1) for each data point
         learning_rate: the learning rate for GD
@@ -70,12 +72,13 @@ def logreg_predict(theta, X):
 
     Args:
         theta: the theta parameter for Logistic Regression
-        X: the design matrix where each row corresponds to a data point and 
+        X: the design matrix where each row corresponds to a data point and
            each column corresponds to a feature
 
     returns:
         Y_hat: the vector containing the predictions
     """
-    probs = 1. / (1 + np.exp(-X.dot(theta)))
+    result = -X.dot(theta).astype(np.float64)
+    probs = 1. / (1 + np.exp(result))
     return probs > 0.5
 
