@@ -90,14 +90,17 @@ def train_bad_words():
         for phoneme in sorted(freq_dict, key=freq_dict.get,reverse=True):
             bad_list.append([phoneme, freq_dict[phoneme]])
 
-        plt.figure(figsize=(30,10))
-        for i in range(len(bad_list)):
+        plt.figure(figsize=(15,10))
+        plt.title("bad words (y = 1)")
+        for i in range(len(bad_list)//2):
             plt.bar(bad_list[i][0], float(bad_list[i][1]), width=0.8,color='r',linewidth=3)
         plt.xlabel('phonemes')
         plt.ylabel('frequency in %')
         plt.savefig('plot_bad.png')
         plt.clf()
-        for i in range(len(bad_list)):
+
+        plt.title("safe words (y = 0)")
+        for i in range(len(bad_list)//2):
             phoneme = bad_list[i][0]
             plt.bar(phoneme, float(nltk_freq_dict[phoneme]), width=0.8,color='b',linewidth=1.5)
         plt.savefig('plot_all.png')
