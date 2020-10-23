@@ -18,7 +18,7 @@ See [g2p](https://github.com/Kyubyong/g2p) for details.
 # Algorithms
 Algorithms from class (e.g. logreg, naivebayes, etc.)
 
-Deep Learning (e.g. [RNN](https://towardsdatascience.com/can-data-science-help-you-pick-a-baby-name-b7e98a98268e))
+Deep Learning (e.g. [Phoneme-based RNN for Baby Names](https://towardsdatascience.com/can-data-science-help-you-pick-a-baby-name-b7e98a98268e), [Phoneme-based RNN for Word Identification](http://papers.neurips.cc/paper/372-a-recurrent-neural-network-for-word-identification-from-continuous-phoneme-strings.pdf))
 
 Clustering algorthms (e.g. [k-meansNN](https://arxiv.org/pdf/1808.07292.pdf))
 
@@ -30,7 +30,11 @@ Clustering algorthms (e.g. [k-meansNN](https://arxiv.org/pdf/1808.07292.pdf))
 YouTube/Reddit
 
 # Ideas
-Detecting personality traits of a person by their writing [Personality Detection through DL](https://link.springer.com/article/10.1007/s10462-019-09770-z)
+- Detecting personality traits of a person by their writing [Personality Detection through DL](https://link.springer.com/article/10.1007/s10462-019-09770-z)
+- Phonestheme-based RNN (This is genuinely novel)
+  - Create phonestheme embedddings (e.g. [word2vec](https://jalammar.github.io/illustrated-word2vec/), [phonestheme discovery](https://www.aclweb.org/anthology/W18-1206/)). My hypothesis is that this will work much better than phoneme embeddings. We may only train on subsets of language that are likely to be sound symbolic, like *names*.
+  - Predict things based on phonestheme embeddings using RNN on channel names, etc.
+  - This is similar to learning embeddings for OOV (out-of-vocabulary) words like in [fasttext](https://datascience.stackexchange.com/questions/54806/word-embedding-of-a-new-word-which-was-not-in-training)
 
 # Notes from OH
 1. In an imbalanced dataset, properly weight the smaller dataset (as in ps1)
