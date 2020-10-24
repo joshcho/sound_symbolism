@@ -15,6 +15,8 @@ See [g2p](https://github.com/Kyubyong/g2p) for details.
 
 [Nominative Determinism](https://en.wikipedia.org/wiki/Nominative_determinism)
 
+[YouTube Topic ID](https://gist.github.com/stpe/2951130dfc8f1d0d1a2ad736bef3b703)
+
 # Algorithms
 Algorithms from class (e.g. logreg, naivebayes, etc.)
 
