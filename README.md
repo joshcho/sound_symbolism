@@ -4,6 +4,11 @@ pip3 install g2p_en
 python g2p.py
 ```
 See [g2p](https://github.com/Kyubyong/g2p) for details.
+
+# Model
+
+https://github.com/huggingface/transformers
+
 # Research Referents
 [LSTM/RNN for Baby Names](https://towardsdatascience.com/can-data-science-help-you-pick-a-baby-name-b7e98a98268e)
 
