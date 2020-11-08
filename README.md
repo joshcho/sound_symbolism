@@ -49,3 +49,8 @@ YouTube/Reddit
 # Notes from OH
 1. In an imbalanced dataset, properly weight the smaller dataset (as in ps1)
 2. If you have a long sequence (like IMDB reviews) and you are using RNN, consider pairs of phonemes rather than individual phonemes (simply because the sequences might become really long otherwise).
+
+# YouTube API
+[YouTube Topic ID](https://gist.github.com/stpe/2951130dfc8f1d0d1a2ad736bef3b703)
+
+[API Quota Cost](https://developers.google.com/youtube/v3/determine_quota_cost)
