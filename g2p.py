@@ -13,8 +13,8 @@ from sklearn.utils import shuffle
 
 g2p = G2p()
 phoneme_dict = util.get_phoneme_dict()
-nltk_matrix_path = "nltk_words_matrix.gz"
-bad_matrix_path = "fb_bad_words_matrix.gz"
+nltk_matrix_path = "saved/nltk_words_matrix.gz"
+bad_matrix_path = "saved/fb_bad_words_matrix.gz"
 
 def transform_text(texts, phoneme_dict):
     """
@@ -47,7 +47,7 @@ def train_bad_words():
     nltk_words = words.words()
 
     # Note that some words in bad_words may not be in nltk_words
-    bad_words = np.loadtxt("facebook-bad-words.txt",delimiter=',',dtype=str)
+    bad_words = np.loadtxt("data/facebook-bad-words.txt",delimiter=',',dtype=str)
 
     # Load if already saved
     if path.exists(nltk_matrix_path):
@@ -81,17 +81,17 @@ def train_bad_words():
     model["test_matrix"] = matrix[index2:]
     model["test_labels"] = labels[index2:]
 
-    naivebayes.run_naive_bayes(model, phoneme_dict, "bad_words_predictions")
+    naivebayes.run_naive_bayes(model, phoneme_dict, "saved/bad_words_predictions")
 
 train_bad_words()
 
 def train_imdb():
-    train_texts, train_labels = util.load_csv('imdb_train.csv')
-    val_texts, val_labels = util.load_csv('imdb_valid.csv')
-    test_texts, test_labels = util.load_csv('imdb_test.csv')
-    train_m_path = "imdb_train_matrix.gz"
-    val_m_path = "imdb_val_matrix.gz"
-    test_m_path = "imdb_test_matrix.gz"
+    train_texts, train_labels = util.load_csv('data/imdb_train.csv')
+    val_texts, val_labels = util.load_csv('data/imdb_valid.csv')
+    test_texts, test_labels = util.load_csv('data/imdb_test.csv')
+    train_m_path = "saved/imdb_train_matrix.gz"
+    val_m_path = "saved/imdb_val_matrix.gz"
+    test_m_path = "saved/imdb_test_matrix.gz"
 
     if path.exists(train_m_path):
         train_matrix = np.loadtxt(train_m_path)
@@ -119,4 +119,4 @@ def train_imdb():
     model["val_labels"] = val_labels
     model["test_labels"] = test_labels
 
-    naivebayes.run_naive_bayes(model, phoneme_dict, "imdb_predictions")
+    naivebayes.run_naive_bayes(model, phoneme_dict, "saved/imdb_predictions")
