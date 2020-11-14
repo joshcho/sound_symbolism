@@ -6,23 +6,13 @@ import collections
 import numpy as np
 
 def fit_naive_bayes_model(matrix, labels):
-    """Fit a naive bayes model.
-
-    This function should fit a Naive Bayes model given a training matrix and labels.
-
-    The function should return the state of the fitted model, consisting of the
-    learned model parameters.
-
-    Feel free to use whatever datatype you wish for the state of the model.
-
+    """
     Args:
         matrix: A numpy array containing word counts for the training data
         labels: The binary (0 or 1) labels for that training data
 
     Returns: The trained model
     """
-
-    # *** START CODE HERE ***
     model = {}
     n,v_size = matrix.shape
     phi_1 = (1 + labels.reshape((1,n)).dot(np.int64(matrix > 0)))/(v_size + labels.dot(np.sum(matrix, axis=1)))
@@ -34,7 +24,6 @@ def fit_naive_bayes_model(matrix, labels):
     model["phi_0"] = phi_0
     model["phi"] = phi
     return model
-    # *** END CODE HERE ***
 
 
 def predict_from_naive_bayes_model(model, matrix):
@@ -49,7 +38,6 @@ def predict_from_naive_bayes_model(model, matrix):
 
     Returns: A numpy array containg the predictions from the model (int array of 0 or 1 values)
     """
-    # *** START CODE HERE ***
     phi_1 = model["phi_1"]
     phi_0 = model["phi_0"]
     matrix1 = phi_1*np.int64(matrix > 0)
@@ -58,9 +46,6 @@ def predict_from_naive_bayes_model(model, matrix):
     p_1 = np.exp((np.sum(np.where(matrix1 > 0, np.log(matrix1.astype(np.float64)),matrix1),axis = 1) + np.log(phi)).astype(np.float64))
     p_0 = np.exp((np.sum(np.where(matrix0 > 0, np.log(matrix0.astype(np.float64)),matrix0),axis = 1) + np.log(1 - phi)).astype(np.float64))
     return 1*(p_1 > p_0)
-    # *** END CODE HERE ***
-
-
 
 def get_top_five_naive_bayes_words(model, dictionary):
     """Compute the top five words that are most indicative of the spam (i.e positive) class.
@@ -74,15 +59,12 @@ def get_top_five_naive_bayes_words(model, dictionary):
 
     Returns: A list of the top five most indicative words in sorted order with the most indicative first
     """
-    # *** START CODE HERE ***
     indic_dict = {}
     for word in dictionary:
         indicativeness = np.log(model["phi_1"][0][dictionary[word]]/model["phi_0"][0][dictionary[word]])
         indic_dict[word] = indicativeness
     sorted_dict = [k for k, v in sorted(indic_dict.items(), key=lambda item: item[1],reverse = True)]
     return sorted_dict[:5]
-    # *** END CODE HERE ***
-
 
 def compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, radius_to_consider):
     """Compute the optimal SVM radius using the provided training and evaluation datasets.
@@ -129,7 +111,6 @@ def compute_best_logreg_learning_rate(train_matrix, train_labels, val_matrix, va
     Returns:
         The best logistic regression learning rate which maximizes validation set accuracy.
     """
-    # *** START CODE HERE ***
     best_lr = 0
     best_accuracy = 0
     for learning_rate in learning_rates_to_consider:
@@ -139,8 +120,6 @@ def compute_best_logreg_learning_rate(train_matrix, train_labels, val_matrix, va
             best_lr = learning_rate
             best_accuracy = accuracy
     return best_lr
-    # *** END CODE HERE ***
-
 
 def run_naive_bayes(model, dictionary, predictions_path):
     train_matrix = model["train_matrix"]
