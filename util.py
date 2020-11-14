@@ -12,6 +12,7 @@ all_phons = ["<pad>", "<unk>", "<s>", "</s>"] + \
         'IY1', 'IY2', 'JH', 'K', 'L','M', 'N', 'NG', 'OW0', 'OW1','OW2',
         'OY0', 'OY1', 'OY2', 'P', 'R', 'S', 'SH', 'T', 'TH','UH0', 'UH1',
         'UH2', 'UW','UW0', 'UW1', 'UW2', 'V', 'W', 'Y', 'Z', 'ZH']
+all_chars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
 def get_phon_dict():
     index = 0
@@ -41,6 +42,35 @@ def transform_text_to_phon_cnts(texts):
         matrix.append(arr)
         if index % 100 == 0:
             print("%d/%d texts transformed" % (index, len(texts)))
+        index += 1
+    return np.array(matrix)
+
+def get_char_dict():
+    index = 0
+    char_dict = {}
+    for char in all_chars:
+        char_dict[char] = index
+        index += 1
+    return char_dict
+
+def transform_text_to_char_cnts(texts):
+    """
+    Args:
+        texts: A list of strings where each string is a text.
+
+    Return:
+        List of vectors of char counts
+    """
+    g2p = G2p()
+    char_dict = get_char_dict()
+    matrix = []
+    index = 0
+    for text in texts:
+        arr = [0] * len(char_dict)
+        for char in text:
+            if char in char_dict:
+                arr[char_dict[char]] += 1
+        matrix.append(arr)
         index += 1
     return np.array(matrix)
 

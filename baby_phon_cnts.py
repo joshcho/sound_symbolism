@@ -29,41 +29,61 @@ def save_names_npy(data_prefix, gen_prefix):
     np.save(gen_prefix + "names.npy", ds)
     return ds
 
-phon_dict = util.get_phon_dict()
-data_prefix = "data/names/"
-gen_prefix = "generated/"
+def main():
+    phon_dict = util.get_phon_dict()
+    data_prefix = "data/names/"
+    gen_prefix = "generated/"
 
-ds = []
-if not path.exists(gen_prefix + "names.npy"):
-    ds = save_names_npy(data_prefix, gen_prefix)
-else:
-    ds = np.load(gen_prefix + "names.npy")
+    ds = []
+    if not path.exists(gen_prefix + "names.npy"):
+        ds = save_names_npy(data_prefix, gen_prefix)
+    else:
+        ds = np.load(gen_prefix + "names.npy")
 
-name_matrix = np.array([[]])
-if not path.exists(gen_prefix + "name_matrix.gz"):
-    name_matrix = util.transform_text_to_phon_cnts(list(np.array(ds)[:,0]))
-    np.savetxt(gen_prefix + "name_matrix.gz", name_matrix)
-else:
-    name_matrix = np.loadtxt(gen_prefix + "name_matrix.gz")
+    name_matrix = np.array([[]])
+    if not path.exists(gen_prefix + "name_matrix.gz"):
+        name_matrix = util.transform_text_to_phon_cnts(list(np.array(ds)[:,0]))
+        np.savetxt(gen_prefix + "name_matrix.gz", name_matrix)
+    else:
+        name_matrix = np.loadtxt(gen_prefix + "name_matrix.gz")
 
-# shuffle matrix
-matrix = name_matrix
-labels = ds[:,1].astype('float64')
-matrix, labels = shuffle(matrix, labels, random_state=0)
-labels = np.reshape(labels, (len(labels),))
+    # shuffle matrix
+    matrix = name_matrix
+    labels = ds[:,1].astype('float64')
+    matrix, labels = shuffle(matrix, labels, random_state=0)
+    labels = np.reshape(labels, (len(labels),))
 
-model = {}
-n = len(matrix)
-index1 = n // 3
-index2 = n * 2 // 3
-model["train_matrix"] = matrix[0: index1]
-model["train_labels"] = labels[0: index1]
-model["val_matrix"] = matrix[index1: index2]
-model["val_labels"] = labels[index1: index2]
-model["test_matrix"] = matrix[index2:]
-model["test_labels"] = labels[index2:]
+    model = {}
+    n = len(matrix)
+    index1 = n // 3
+    index2 = n * 2 // 3
+    model["train_matrix"] = matrix[0: index1]
+    model["train_labels"] = labels[0: index1]
+    model["val_matrix"] = matrix[index1: index2]
+    model["val_labels"] = labels[index1: index2]
+    model["test_matrix"] = matrix[index2:]
+    model["test_labels"] = labels[index2:]
 
-naivebayes.run_naive_bayes(model, phon_dict, "saved/baby_gender_predictions")
+    naivebayes.run_naive_bayes(model, phon_dict, "saved/baby_gender_predictions")
+
+    name_char_matrix = util.transform_text_to_char_cnts(list(np.array(ds)[:,0]))
+    matrix = name_char_matrix
+    labels = ds[:,1].astype('float64')
+    matrix, labels = shuffle(matrix, labels, random_state=0)
+    labels = np.reshape(labels, (len(labels),))
+
+    model = {}
+    n = len(matrix)
+    index1 = n // 3
+    index2 = n * 2 // 3
+    model["train_matrix"] = matrix[0: index1]
+    model["train_labels"] = labels[0: index1]
+    model["val_matrix"] = matrix[index1: index2]
+    model["val_labels"] = labels[index1: index2]
+    model["test_matrix"] = matrix[index2:]
+    model["test_labels"] = labels[index2:]
+    print("-------------CHAR-------------------")
+    naivebayes.run_naive_bayes(model, util.get_char_dict(), "saved/baby_gender_predictions_char")
 
 
 def train_bad_words():
@@ -110,5 +130,5 @@ def train_bad_words():
     model["test_labels"] = labels[index2:]
     return model
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
