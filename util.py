@@ -68,8 +68,8 @@ def transform_text_to_char_cnts(texts):
     for text in texts:
         arr = [0] * len(char_dict)
         for char in text:
-            if char in char_dict:
-                arr[char_dict[char]] += 1
+            if char.upper() in char_dict:
+                arr[char_dict[char.upper()]] += 1
         matrix.append(arr)
         index += 1
     return np.array(matrix)
