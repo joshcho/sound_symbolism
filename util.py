@@ -1,6 +1,8 @@
 import csv
 import pandas as pd
 import time as ti
+import numpy as np
+from g2p_en import G2p
 
 all_phons = ["<pad>", "<unk>", "<s>", "</s>"] + \
     ['AA0', 'AA1', 'AA2', 'AE0', 'AE1', 'AE2', 'AH0', 'AH1', 'AH2',
@@ -18,6 +20,29 @@ def get_phon_dict():
         phon_dict[phon] = index
         index += 1
     return phon_dict
+
+def transform_text_to_phon_cnts(texts):
+    """
+    Args:
+        texts: A list of strings where each string is a text.
+
+    Return:
+        List of vectors of phoneme counts
+    """
+    g2p = G2p()
+    phon_dict = get_phon_dict()
+    matrix = []
+    index = 0
+    for text in texts:
+        arr = [0] * len(phon_dict)
+        for phon in g2p(text):
+            if phon in phon_dict:
+                arr[phon_dict[phon]] += 1
+        matrix.append(arr)
+        if index % 100 == 0:
+            print("%d/%d texts transformed" % (index, len(texts)))
+        index += 1
+    return np.array(matrix)
 
 def load_csv(csv_path):
     """Load the dataset from a TSV file
