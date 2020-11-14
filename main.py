@@ -36,10 +36,6 @@ def transform_text(texts, phon_dict):
         index += 1
     return np.array(matrix)
 
-def transform_words_and_save(word_set, save_path):
-    matrix = transform_text(word_set, phon_dict)
-    np.savetxt(save_path, matrix)
-
 def train_bad_words():
     nltk.download('words')
     nltk_words = words.words()
@@ -53,12 +49,14 @@ def train_bad_words():
     if path.exists(nltk_matrix_path):
         nltk_matrix = np.loadtxt(nltk_matrix_path)
     else:
-        transform_words_and_save(nltk_words, nltk_matrix_path)
+        nltk_matrix = transform_text(word_set, phon_dict)
+        np.savetxt(nltk_matrix_path, nltk_matrix)
 
     if path.exists(bad_matrix_path):
         bad_matrix = np.loadtxt(bad_matrix_path)
     else:
-        transform_words_and_save(bad_words, bad_matrix_path)
+        bad_matrix = transform_text(word_set, phon_dict)
+        np.savetxt(bad_matrix_path, bad_matrix)
 
     nltk_labels = np.array([[1 if word in bad_words else 0 \
                              for word in nltk_words]]).T
