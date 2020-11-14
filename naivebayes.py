@@ -1,4 +1,3 @@
-import svm
 import math
 import util
 import logreg
@@ -154,24 +153,18 @@ def run_naive_bayes(model, dictionary, predictions_path):
         return (correct0/num0 + correct1/num1)/2
 
     print('Naive Bayes had a balanced accuracy of {} on the testing set'.format(balanced_accuracy(naive_bayes_predictions, test_labels)))
+    print('Naive Bayes had an accuracy of {} on the testing set'.format(np.mean(naive_bayes_predictions == test_labels)))
 
     top_5_words = get_top_five_naive_bayes_words(naive_bayes_model, dictionary)
 
-    print('The top 5 indicative words for Naive Bayes are: ', top_5_words)
+    print('The top 5 indicative phonemes for Naive Bayes are: ', top_5_words)
 
-    # optimal_radius = compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, [0.01, 0.1, 1, 10])
+    lr = 0.1
+    logreg_predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, test_matrix, lr)
 
-    # print('The optimal SVM radius was {}'.format(optimal_radius))
-
-    # svm_predictions = svm.train_and_predict_svm(train_matrix, train_labels, test_matrix, optimal_radius)
-
-    # svm_accuracy = np.mean(svm_predictions == test_labels)
-
-    # print('The SVM model had an accuracy of {} on the testing set'.format(svm_accuracy, optimal_radius))
-
-    logreg_predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, test_matrix, 0.001)
-
-    logreg_accuracy = balanced_accuracy(logreg_predictions, test_labels)
-    # logreg_accuracy = np.mean(logreg_predictions == test_labels)
+    logreg_accuracy = np.mean(logreg_predictions == test_labels)
 
     print('The Logistic Regression model had an accuracy of {} on the testing set'.format(logreg_accuracy))
+
+    logreg_balanced_accuracy = balanced_accuracy(logreg_predictions, test_labels)
+    print('The Logistic Regression model had a balanced accuracy of {} on the testing set'.format(logreg_balanced_accuracy))
