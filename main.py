@@ -13,8 +13,6 @@ from sklearn.utils import shuffle
 
 g2p = G2p()
 phoneme_dict = util.get_phoneme_dict()
-nltk_matrix_path = "saved/nltk_words_matrix.gz"
-bad_matrix_path = "saved/fb_bad_words_matrix.gz"
 
 def transform_text(texts, phoneme_dict):
     """
@@ -83,7 +81,6 @@ def train_bad_words():
 
     naivebayes.run_naive_bayes(model, phoneme_dict, "saved/bad_words_predictions")
 
-train_bad_words()
 
 def train_imdb():
     train_texts, train_labels = util.load_csv('data/imdb_train.csv')
