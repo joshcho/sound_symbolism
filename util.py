@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import time as ti
 
-all_phonemes = ["<pad>", "<unk>", "<s>", "</s>"] + \
+all_phons = ["<pad>", "<unk>", "<s>", "</s>"] + \
     ['AA0', 'AA1', 'AA2', 'AE0', 'AE1', 'AE2', 'AH0', 'AH1', 'AH2',
         'AO0', 'AO1', 'AO2', 'AW0', 'AW1', 'AW2', 'AY0', 'AY1', 'AY2',
         'B', 'CH', 'D', 'DH','EH0', 'EH1', 'EH2', 'ER0', 'ER1', 'ER2',
@@ -11,13 +11,13 @@ all_phonemes = ["<pad>", "<unk>", "<s>", "</s>"] + \
         'OY0', 'OY1', 'OY2', 'P', 'R', 'S', 'SH', 'T', 'TH','UH0', 'UH1',
         'UH2', 'UW','UW0', 'UW1', 'UW2', 'V', 'W', 'Y', 'Z', 'ZH']
 
-def get_phoneme_dict():
+def get_phon_dict():
     index = 0
-    phoneme_dict = {}
-    for phoneme in all_phonemes:
-        phoneme_dict[phoneme] = index
+    phon_dict = {}
+    for phon in all_phons:
+        phon_dict[phon] = index
         index += 1
-    return phoneme_dict
+    return phon_dict
 
 def load_csv(csv_path):
     """Load the dataset from a TSV file

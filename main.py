@@ -12,13 +12,13 @@ import random
 from sklearn.utils import shuffle
 
 g2p = G2p()
-phoneme_dict = util.get_phoneme_dict()
+phon_dict = util.get_phon_dict()
 
-def transform_text(texts, phoneme_dict):
+def transform_text(texts, phon_dict):
     """
     Args:
         texts: A list of strings where each string is a text.
-        phoneme_dict: A dictionary with keys as a phoneme and value as index.
+        phon_dict: A dictionary with keys as a phoneme and value as index.
 
     Return:
         List of vectors of phoneme counts
@@ -26,10 +26,10 @@ def transform_text(texts, phoneme_dict):
     matrix = []
     index = 0
     for text in texts:
-        arr = [0] * len(phoneme_dict)
-        for phoneme in g2p(text):
-            if phoneme in phoneme_dict:
-                arr[phoneme_dict[phoneme]] += 1
+        arr = [0] * len(phon_dict)
+        for phon in g2p(text):
+            if phon in phon_dict:
+                arr[phon_dict[phon]] += 1
         matrix.append(arr)
         if index % 100 == 0:
             print("%d/%d texts transformed" % (index, len(texts)))
@@ -37,12 +37,14 @@ def transform_text(texts, phoneme_dict):
     return np.array(matrix)
 
 def transform_words_and_save(word_set, save_path):
-    matrix = transform_text(word_set, phoneme_dict)
+    matrix = transform_text(word_set, phon_dict)
     np.savetxt(save_path, matrix)
 
 def train_bad_words():
     nltk.download('words')
     nltk_words = words.words()
+    nltk_matrix_path = "saved/nltk_words_matrix.gz"
+    bad_matrix_path = "saved/fb_bad_words_matrix.gz"
 
     # Note that some words in bad_words may not be in nltk_words
     bad_words = np.loadtxt("data/facebook-bad-words.txt",delimiter=',',dtype=str)
@@ -79,8 +81,7 @@ def train_bad_words():
     model["test_matrix"] = matrix[index2:]
     model["test_labels"] = labels[index2:]
 
-    naivebayes.run_naive_bayes(model, phoneme_dict, "saved/bad_words_predictions")
-
+    naivebayes.run_naive_bayes(model, phon_dict, "saved/bad_words_predictions")
 
 def train_imdb():
     train_texts, train_labels = util.load_csv('data/imdb_train.csv')
@@ -93,19 +94,19 @@ def train_imdb():
     if path.exists(train_m_path):
         train_matrix = np.loadtxt(train_m_path)
     else:
-        train_matrix = transform_text(train_texts, phoneme_dict)
+        train_matrix = transform_text(train_texts, phon_dict)
         np.savetxt(train_m_path, train_matrix)
 
     if path.exists(val_m_path):
         val_matrix = np.loadtxt(val_m_path)
     else:
-        val_matrix = transform_text(val_texts, phoneme_dict)
+        val_matrix = transform_text(val_texts, phon_dict)
         np.savetxt(val_m_path, val_matrix)
 
     if path.exists(test_m_path):
         test_matrix = np.loadtxt(test_m_path)
     else:
-        test_matrix = transform_text(test_texts, phoneme_dict)
+        test_matrix = transform_text(test_texts, phon_dict)
         np.savetxt(test_m_path, test_matrix)
 
     model = {}
@@ -116,4 +117,4 @@ def train_imdb():
     model["val_labels"] = val_labels
     model["test_labels"] = test_labels
 
-    naivebayes.run_naive_bayes(model, phoneme_dict, "saved/imdb_predictions")
+    naivebayes.run_naive_bayes(model, phon_dict, "saved/imdb_predictions")
