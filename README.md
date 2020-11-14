@@ -5,9 +5,11 @@ python g2p.py
 ```
 See [g2p](https://github.com/Kyubyong/g2p) for details.
 
-# Model
+# So far
 
-https://github.com/huggingface/transformers
+We tried a naive "count the number of phonemes" approach with logreg and naive bayes on Facebook's List of Banned Words and IMDB Movie Reviews. In the former case, we had too little data (only 1703 banned words), and in the latter, the reviews were too long for our naive solution to work. Thus they both resulted in 0.5 balanced accuracy, thus with no meaningful results.
+
+We then tried baby gender prediction with this naive approach, with some meaningful results from naive bayes. Logistic regression did not prove useful, but we tried three different approaches with naive bayes: count the number of each phonemes, count the number of each character, and the combination of both. The resulting balanced accuracy is as follows: 0.6035, 0.6179, and 0.6522. Thus while naive character count performs better than naive phoneme count, combining both had some impact on the accuracy. While this isn't a drastic improvement, it still shows that considering phoneme as a separate and equally important feature of a word is useful, even in a simple model like given.
 
 # Research Referents
 [LSTM/RNN for Baby Names](https://towardsdatascience.com/can-data-science-help-you-pick-a-baby-name-b7e98a98268e)
@@ -51,6 +53,8 @@ YouTube/Reddit
 # Notes from OH
 1. In an imbalanced dataset, properly weight the smaller dataset (as in ps1)
 2. If you have a long sequence (like IMDB reviews) and you are using RNN, consider pairs of phonemes rather than individual phonemes (simply because the sequences might become really long otherwise).
+
+https://github.com/huggingface/transformers
 
 # YouTube API
 [YouTube Topic ID](https://gist.github.com/stpe/2951130dfc8f1d0d1a2ad736bef3b703)
