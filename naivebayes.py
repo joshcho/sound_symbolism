@@ -94,32 +94,6 @@ def compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, 
     return best_radius
     # *** END CODE HERE ***
 
-def compute_best_logreg_learning_rate(train_matrix, train_labels, val_matrix, val_labels, learning_rates_to_consider):
-    """Compute the best logistic regression learning rate using the provided training and evaluation datasets.
-
-    You should only consider learning rates within the learning_rates_to_consider list.
-    You should use validation set accuracy as a metric for comparing the different learning rates.
-
-    Args:
-        train_matrix: The word counts for the training data
-        train_labels: The spam or not spam labels for the training data
-        val_matrix: The word counts for the validation data
-        val_labels: The spam or not spam labels for the validation data
-        learning_rates_to_consider: The learning rates to consider
-
-    Returns:
-        The best logistic regression learning rate which maximizes validation set accuracy.
-    """
-    best_lr = 0
-    best_accuracy = 0
-    for learning_rate in learning_rates_to_consider:
-        predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, val_matrix, learning_rate)
-        accuracy = np.mean(predictions == val_labels)
-        if accuracy > best_accuracy:
-            best_lr = learning_rate
-            best_accuracy = accuracy
-    return best_lr
-
 def run_naive_bayes(model, dictionary, predictions_path):
     train_matrix = model["train_matrix"]
     val_matrix = model["val_matrix"]
@@ -153,18 +127,8 @@ def run_naive_bayes(model, dictionary, predictions_path):
         return (correct0/num0 + correct1/num1)/2
 
     print('Naive Bayes had a balanced accuracy of {} on the testing set'.format(balanced_accuracy(naive_bayes_predictions, test_labels)))
-    print('Naive Bayes had an accuracy of {} on the testing set'.format(np.mean(naive_bayes_predictions == test_labels)))
+    # print('Naive Bayes had an accuracy of {} on the testing set'.format(np.mean(naive_bayes_predictions == test_labels)))
 
     top_5_words = get_top_five_naive_bayes_words(naive_bayes_model, dictionary)
 
-    print('The top 5 indicative phonemes for Naive Bayes are: ', top_5_words)
-
-    lr = 0.1
-    logreg_predictions = logreg.train_and_predict_logreg(train_matrix, train_labels, test_matrix, lr)
-
-    logreg_accuracy = np.mean(logreg_predictions == test_labels)
-
-    print('The Logistic Regression model had an accuracy of {} on the testing set'.format(logreg_accuracy))
-
-    logreg_balanced_accuracy = balanced_accuracy(logreg_predictions, test_labels)
-    print('The Logistic Regression model had a balanced accuracy of {} on the testing set'.format(logreg_balanced_accuracy))
+    print('The top 5 indicative characters/phonemes for Naive Bayes are: ', top_5_words)
