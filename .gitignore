@@ -3,4 +3,4 @@ __pycache__
 *.csv
 *.gz
 *.npy
-*_predictions
+*_predictions*
