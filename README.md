@@ -36,6 +36,8 @@ Phonestheme2vec (e.g. [Investigation into Phonesthemes](https://www.aclweb.org/a
 
 [Bad Words](https://www.freewebheaders.com/bad-words-list-and-page-moderation-words-list-for-facebook/)
 
+[Baby Names](https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data)
+
 YouTube/Reddit
 
 # Ideas
