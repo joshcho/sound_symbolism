@@ -46,6 +46,8 @@ Phonestheme2vec (e.g. [Investigation into Phonesthemes](https://www.aclweb.org/a
 
 [Baby Names](https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data)
 
+[Korean Baby Names](https://koreanname.me/)
+
 YouTube/Reddit
 
 # Ideas
