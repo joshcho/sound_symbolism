@@ -44,7 +44,7 @@ Phonestheme2vec (e.g. [Investigation into Phonesthemes](https://www.aclweb.org/a
 
 [Bad Words](https://www.freewebheaders.com/bad-words-list-and-page-moderation-words-list-for-facebook/)
 
-[Baby Names](https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data)
+[US Baby Names](https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data)
 
 [Korean Baby Names](https://koreanname.me/)
 
