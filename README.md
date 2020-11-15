@@ -22,6 +22,10 @@ We then tried baby gender prediction with this naive approach, with some meaning
 
 [Nominative Determinism](https://en.wikipedia.org/wiki/Nominative_determinism)
 
+[Generating Pokemon Names with RNN](https://github.com/yangobeil/Pokemon-name-generator/blob/master/Generate%20Pok%C3%A9mon%20names.ipynb)
+
+[Generating Text (Alice in Wonderland) with RNN](https://towardsdatascience.com/text-generation-using-rnns-fdb03a010b9f)
+
 # Algorithms
 Algorithms from class (e.g. logreg, naivebayes, etc.)
 
