@@ -26,6 +26,8 @@ We then tried baby gender prediction with this naive approach, with some meaning
 
 [Generating Text (Alice in Wonderland) with RNN](https://towardsdatascience.com/text-generation-using-rnns-fdb03a010b9f)
 
+[IPA (Phoneme) Reader](http://ipa-reader.xyz/)
+
 # Algorithms
 Algorithms from class (e.g. logreg, naivebayes, etc.)
 
