@@ -137,8 +137,12 @@ def save_gender_neutral_names_npy(data_prefix, gen_prefix):
     ds = []
     for name in gender_neutral_names:
         ds.append([name, 1])
+    index = 0
     for name in non_gender_neutral_names:
+        index +=1
         ds.append([name, 0])
+        if index > len(gender_neutral_names):
+            break
     np.save(gen_prefix + "gender_neutral_names.npy", ds)
     return ds
 
